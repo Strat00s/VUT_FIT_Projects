@@ -1,0 +1,85 @@
+\section{Příklad 5}
+% Jako parametr zadejte skupinu (A-H)
+\patyZadani{E}
+
+Sestavíme rovnice pro smyčková napětí v obvodu a vyjádříme proud:
+    \begin{eqnarray*}
+        U &= & U_{C} + U_{R}\\
+        U_{R} &= & R * I\\
+        U &= & U_{C} + R * I\\
+        \\
+        I &= & \frac{U - U_{C}}{R}\\
+	\end{eqnarray*}
+
+Hodnoty dosadíme do rovnice (axiomu) pro tento obvod a upravíme:
+    \begin{eqnarray*}
+        U_{C}' &= & \frac{1}{C}I\\
+        U_{C}' &= & \frac{1}{C} * \frac{U - U_{C}}{R}\\
+        U_{C}' &= & \frac{U - U_{C}}{RC}\\
+        \\
+        U_{C}' &= & \frac{40 - U_{C}}{40 * 30} = \frac{1}{30} - U_{C}\frac{1}{1200}\\
+        U_{C}' + U_{C}\frac{1}{1200} &= & \frac{1}{30}\\
+	\end{eqnarray*}
+
+Obecný tvar rovnice a výpočet $\lambda$:
+    \begin{eqnarray*}
+        U_{C}(t) &= & K(t)e^{\lambda t}\\
+        0 &= & \lambda + \frac{1}{1200}\\
+        \lambda &= & -\frac{1}{1200}\\
+	\end{eqnarray*}
+
+Dosadíme do obecného a zderivovaného tvaru:
+    \begin{eqnarray*}
+        U_{C}(t) &= & K(t)e^{-\frac{1}{1200}t}\\
+        U_{C}'(t) &= & K'(t)e^{-\frac{1}{1200}t} -\frac{1}{1200}K(t)e^{-\frac{1}{1200}t}\\
+	\end{eqnarray*}
+
+Dále dosadíme do rovnice obvodu:
+    \begin{eqnarray*}
+        U_{C}' + U_{C}\frac{1}{1200} &= & \frac{1}{30}\\
+        K'(t)e^{-\frac{1}{1200}t} -\frac{1}{1200}K(t)e^{-\frac{1}{1200}t} + \frac{1}{1200}K(t)e^{-\frac{1}{1200}t} &= & \frac{1}{30}\\
+        K'(t)e^{-\frac{1}{1200}t} &= & \frac{1}{30}\\
+	\end{eqnarray*}
+
+Zjistíme $K(t)$ (integrováním):
+    \begin{eqnarray*}
+        K'(t)e^{-\frac{1}{1200}t} &= & \frac{1}{30}\\
+        K'(t) &= & \frac{e^\frac{1}{1200}t}{30}\\
+        K(t) = \int K'(t) dt &= & \frac{e^\frac{1}{1200}t}{30}\\
+        K(t) &= & 40e^\frac{1}{1200}t + X\\
+	\end{eqnarray*}
+
+Dosadíme do obecného tvaru:
+    \begin{eqnarray*}
+        U_{C}(t) &= & K(t)e^\lambda t = (40e^\frac{1}{1200} + X)e^{-\frac{1}{1200}t} = 40 + Xe^{-\frac{1}{1200}t}\\
+	\end{eqnarray*}
+
+Zjistíme C pomocí počáteční podmínky:
+    \begin{eqnarray*}
+        U_{C}(0) &= & 40 + Xe^{-\frac{1}{1200}t}\\
+        U_{C}(0) &= & 40 + Xe^{-\frac{1}{1200} * 0}\\
+        11 &= & 40 + X\\
+        X &= & - 29\\
+	\end{eqnarray*}
+
+Naposledy dosadíme:
+    \begin{eqnarray*}
+        U_{C}(t) &= &  40 + Xe^{-\frac{1}{1200}t}\\
+        U_{C}(t) &= &  40 + 29e^{-\frac{1}{1200}t}\\
+	\end{eqnarray*}
+
+Hledaná hodnota $U_{C}(t)$ je:
+    \begin{eqnarray*}
+        U_{C}(t) &= & 40 - 29e^{-\frac{1}{1200}t}\\
+	\end{eqnarray*}
+	
+Kontrola:
+    \begin{eqnarray*}
+        U_{C}' + U_{C}\frac{1}{1200} &= & \frac{1}{30}\\
+        U_{C}(t) &= & 40 - 29e^{-\frac{1}{1200}t}\\
+        U_{C}'(t) &= & \frac{29}{1200}e^{-\frac{1}{1200}t}\\
+        \frac{29}{1200}e^{-\frac{1}{1200}t} + \frac{1}{1200}(40 - 29e^{-\frac{1}{1200}t}) &= & \frac{1}{30}\\
+        \frac{29}{1200}e^{-\frac{1}{1200}t} - \frac{29}{1200}e^{-\frac{1}{1200}t} + \frac{1}{30} &= & \frac{1}{30}\\
+        \frac{29}{1200}e^{-\frac{1}{1200}t} + \frac{1}{30} &= & \frac{1}{30} + \frac{29}{1200}e^{-\frac{1}{1200}t}\\
+        0 &= & 0\\
+	\end{eqnarray*}

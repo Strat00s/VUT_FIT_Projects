@@ -1,0 +1,141 @@
+<html>
+<head>
+  <title> ITU ajax </title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
+  <style type="text/css">
+  div, input { margin: 10px; }
+  </style>
+</head>
+<body>
+
+<div id="chatArea" style="height: 800px; border: solid #aaa 1px; overflow:auto;"></div> 
+
+<form onsubmit="return uploadData()">
+  <input type="text" id="newMessageString">
+  <input type="submit" value="send">
+</form>
+
+<div id="status" style="border: solid #aaa 1px; ">&nbsp;</div> 
+
+
+<script type="text/javascript">
+
+/***
+  * XMLHttpRequest object constructor (for compatibility with various browsers)
+  */
+
+//global variables
+var last_id = 0;
+var user = "xbasty00";
+var URL = "http://pckiss.fit.vutbr.cz/itu/api.php"; //"http://www.stud.fit.vutbr.cz/~xmlich02/itu-ajax/api.php";
+
+function createXmlHttpRequestObject() 
+{
+    var request;
+  
+    try
+    {
+        request = new XMLHttpRequest(); // should work on all browsers except IE6 or older
+    } 
+    catch (e) 
+    { 
+        try 
+        {
+            request = new ActiveXObject("Microsoft.XMLHttp"); // browser is IE6 or older
+        }
+        catch (e) 
+        {
+            // ignore error
+        }
+    }
+  
+    if (!request) 
+    {
+        alert("Error creating the XMLHttpRequest object.");
+    } 
+    else 
+    {
+        return request;
+    }
+}
+
+function uploadData()
+{
+    //document.getElementById("status").innerHTML = "uploadData()";
+
+    try {
+        var request = createXmlHttpRequestObject(); //save XMLHttpRequestObject
+
+        var METHOD = "POST";    //set "access" method to POST
+
+        request.open(METHOD, URL, true);    //open with POST on server URL and asynchronous
+
+        //on request finish
+        request.onreadystatechange = function() {
+            if ((request.readyState == 4) && (request.status == 200)) { //good response
+                console.log("Send good");
+            }
+        }
+
+        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;"); //set header
+
+        var data_to_send = document.getElementById("newMessageString").value;   //save text field value (what we typed)
+        document.getElementById("newMessageString").value = '';                 //clear it field
+
+        request.send("user="+user+"&data="+data_to_send); //send request (data and login)
+
+        downloadData(); //refresh chatArea (and everything)
+    } 
+    catch (e) 
+    {
+        alert(e.toString());
+    }
+
+    return false; // to avoid default form submit behavior 
+}
+
+function downloadData() {
+
+    //document.getElementById("status").innerHTML = "downloadData()";
+
+    var request = createXmlHttpRequestObject(); //save XMLHttpRequestObject
+
+    var METHOD = "GET"; //set method to GET
+    
+    request.open(METHOD, URL, true);    //open with ge GET on server URL and asynchronous
+    
+    //on request finish
+    request.onreadystatechange = function() {
+        if ((request.readyState == 4) && (request.status == 200)) { //good response
+
+            var data = JSON.parse(request.responseText);    //parse json
+
+            // check that last_id is smaller, but max by 20
+            if (last_id < data[19].id - 20){
+                last_id = data[19].id - 20;
+                if (last_id < 0) last_id = 0;   //idk, maybe if IDs reset
+            }
+
+            //if ID is different from "new" last messages
+            if (last_id != data[19].id) {
+
+                //print "new" last messages
+                for (var i = 20 - (data[19].id - last_id); i < 20; i++) {
+                    document.getElementById("chatArea").innerHTML += "[" + data[i].dts + "] " + data[i].login.bold() + ": " + data[i].cnt + "<br />";   //add date, login and message
+                    console.log(data[i]);
+                }
+                last_id = data[19].id;  //update last id
+            }
+            document.getElementById("status").innerHTML = "Last msg ID: " + data[19].id + " from " + data[19].login;    //write id and login to status
+
+        }
+    }
+
+    request.send(null); //send request
+}
+
+setInterval(downloadData, 3000);    //get data from server every 5 seconds
+
+</script>
+
+</html>

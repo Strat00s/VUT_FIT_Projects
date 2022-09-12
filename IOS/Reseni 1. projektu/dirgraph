@@ -1,0 +1,209 @@
+#!/bin/bash
+
+POSIXLY_CORRECT=yes
+
+directory="."
+ignore=false
+normalize=false
+
+highest=0
+start_size=100
+file_owf=0
+magnitude=3
+
+Message() {
+	case $1 in
+		help) printf "Usage: ./dirgraph [-i] [FILE_ERE] [-n] [DIR]\n" ;;
+		wrong_args) printf "./dirgraph: Wrong argument(s) given\nTry './dirgraph --help' for more info\n" ;;
+		not_dir) printf "./dirgraph: '%s' is not a directory\n" "$error_dir";;
+		perm) printf "You don't have a permission to access some files/folders\n";;
+		pattern) printf "Root directory contains ingored string!\n"
+	esac
+}
+
+if [ $# -eq 1 ]
+  then
+    if [ "$1" = "--help" ]
+	  then
+		Message "help"
+		exit 0
+	fi
+fi
+
+#getopts for wanted arguments, first ":" used to hide Message from getopts about illegal arguments
+while getopts ":i:n" optname
+  do
+  	case $optname in
+  	    i)	ignore=true
+		   	if [ "${#OPTARG}" -eq 0 ] || [ "$OPTARG" = "-n" ]
+			  then
+			  	Message "wrong_args"
+		    	exit 1
+			fi
+		    str="$OPTARG";;
+  	    n) 	normalize=true;;
+  	    ?) 	Message "wrong_args"
+		    exit 1;;
+	esac
+done
+
+#remove all arguments (-i ignore -n) before "path" (-i ignore -n path)
+shift "$((OPTIND - 1))"
+
+#check that "path" has only 1 argument and is a directory
+if [ $# -eq 1 ]
+  then
+	if [ -d "$1" ] && [ -n "$1" ]
+	  then
+	    directory=$1
+	elif [ ! -d "$1" ] && [ -n "$1" ]
+	  then
+	  	error_dir=$1
+		Message "not_dir"
+		exit 1
+	fi
+elif [ $# -gt 1 ]
+  then
+    Message "wrong_args"
+	exit 1
+fi
+
+#-t check if running in terminal; 1 stdout
+if [ -t 1 ]
+  then
+	width=$(($(tput cols) -1))
+
+else
+	width=79
+fi
+
+#Permission check (kinda duplicate code)
+tmp=$(find "$directory" 2>/dev/null)
+if [ $? -eq 1 ]
+  then
+	Message "perm"
+	exit 1
+fi
+
+if [ $ignore = true ]
+  then
+	if [ "$(echo "$directory" | grep -c -E "$str")" -eq 1 ]
+	  then
+		Message "pattern"
+		exit 1
+	fi
+	dir_cnt=$(($(find "$directory" -type d | wc -l)-$(find "$directory" -type d | grep -c -E "$str")))
+	file_cnt=$(($(find "$directory" -type f | wc -l)-$(find "$directory" -type f | grep -c -E "$str")))
+	FSHIST[0]=$(find "$directory" -type f -size -"$start_size"c | grep -c -E "$str")
+else
+	dir_cnt=$(find "$directory" -type d | wc -l)
+	file_cnt=$(find "$directory" -type f | wc -l)
+fi
+
+#Hist header
+printf "Root directory: %s\n" "$directory"
+printf "Directories: %s\n" "$dir_cnt"
+printf "All files: %s\n" "$file_cnt"
+printf "File size histogram:"
+
+#Print bars
+Graph() {
+	i=0
+	if [ $normalize = true ] && [ "$file_cnt" -ne 0 ]
+	  then
+		while [ $i -lt $(((width-12)*$1/highest)) ]	#12 = lenght of size info (  <100B  : )
+		  do
+			printf "#"
+			i=$((i+1))
+		done
+
+	else 
+		while [ $i -lt "$1" ]
+		  do
+		  	printf "#"
+			i=$((i+1))
+		done
+	fi
+}
+
+#--------------------------
+#TODO nicer
+#get number of files in said size category and find category with the biggest ammount of files (for normalization)
+i=0
+if [ "$file_cnt" -ne 0 ]
+  then
+	while [ $i -lt 8 ]
+	  do
+		tmp=$(find "$directory" -type f -size -"$start_size"c)
+		if [ ${#tmp} -eq 0 ]
+		  then
+		  FSHIST[$i]=0	#calling echo on empty list creates a NL - quic fix
+		
+		else
+			if [ $ignore = true ]
+			  then
+				FSHIST[$i]=$(($(echo "$tmp" | wc -l)-$(echo "$tmp" | grep -E -c "$str")-"$file_owf"))
+			else
+	  			FSHIST[$i]=$(($(echo "$tmp" | wc -l)-"$file_owf"))
+			fi
+		fi
+		if [ $magnitude -eq 3 ]
+		  then
+			start_size=$((start_size*1024/100))
+			magnitude=1
+
+		else
+			start_size=$((start_size*10))
+			magnitude=$((magnitude+1))
+		fi
+		file_owf=$((file_owf+$((FSHIST[i]))))
+		if [ $((FSHIST[i])) -gt $highest ]
+		  then
+			highest=$((FSHIST[i]))
+		fi
+		i=$((i+1))
+	done
+
+else
+	while [ $i -lt 8 ]
+	  do
+		FSHIST[$i]=0
+		i=$((i+1))
+	done
+fi
+#--------------------------
+
+#special just for the last array
+if [ $ignore = true ]
+  then
+	FSHIST[8]=$(($(find "$directory" -type f -size +1073741823c | wc -l)-$(find "$directory" -type f -size +1073741823c | grep -E -c "$str") ))
+else
+	#(1024*1024*1024)-1
+	FSHIST[8]=$(find "$directory" -type f -size +1073741823c | wc -l)
+fi
+
+if [ $((FSHIST[8])) -gt $highest ]
+  then
+	highest=$((FSHIST[8]))
+fi
+
+printf "\n  <100 B  : "
+Graph "$((FSHIST[0]))"
+printf "\n  <1 KiB  : "
+Graph "$((FSHIST[1]))"
+printf "\n  <10 KiB : "
+Graph "$((FSHIST[2]))"
+printf "\n  <100 KiB: "
+Graph "$((FSHIST[3]))"
+printf "\n  <1 MiB  : "
+Graph "$((FSHIST[4]))"
+printf "\n  <10 MiB : "
+Graph "$((FSHIST[5]))"
+printf "\n  <100 MiB: "
+Graph "$((FSHIST[6]))"
+printf "\n  <1 GiB  : "
+Graph "$((FSHIST[7]))"
+printf "\n  >=1 GiB : "
+Graph "$((FSHIST[8]))"
+echo ""
+exit 0

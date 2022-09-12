@@ -1,0 +1,93 @@
+\section{Příklad 4}
+% Jako parametr zadejte skupinu (A-H)
+\ctvrtyZadani{C}
+
+Vypočítáme kapacitanci:
+    \begin{eqnarray*}
+        X_{C} &= & \frac{-i}{2\pi fC} = - \frac{1}{2 \pi fC}i\\
+        X_{C1} &= & - \frac{1}{2 \pi * 75 * 230 * 10^{-6}}i = -9.2264i \Omega\\
+        X_{C2} &= & - \frac{1}{2 \pi * 75 * 85 * 10^{-6}}i = -24.9655i \Omega\\
+	\end{eqnarray*}
+
+Vypočítáme induktanci:
+    \begin{eqnarray*}
+        X_{L} &= & 2 \pi fLi\\
+        X_{L1} &= & 2 \pi * 75 * 220 * 10^{-3} = 103.6726i \Omega\\
+        X_{L2} &= & 2 \pi * 75 * 70 * 10^{-3} = 32.9867i \Omega\\
+	\end{eqnarray*}
+
+Sestavíme rovnice pro smyčková napětí v obvodu:
+    \begin{eqnarray*}
+        A &: & 0 = U_{1} + I_{A}X_{L1} + I_{A}X_{C2} - I_{C}X_{C2}\\
+        B &: & 0 = U_{2} + I_{B}X_{C1} + I_{B}R_{1}\\
+        C &: & 0 = -U_{2} + I_{C}X_{C2} + I_{C}R_{2} + I_{C}X_{L2} - I_{A}X_{C2}\\
+	\end{eqnarray*}
+
+Upravíme rovnice:
+    \begin{eqnarray*}
+        - U_{1} &= & I_{A}(X_{L1} + X_{C2}) + 0I_{B} - I_{C}X_{C2}\\
+        - U_{2} &= & 0I_{A} + I_{B}(X_{C1} + R_{1}) + 0I_{C}\\
+        U_{2} &= & -I_{A}X_{C2} + 0I_{B} + I_{C}(X_{L2} + X_{C2} + R_{2})\\
+	\end{eqnarray*}
+	
+Dosadíme do rovnic:
+    \begin{eqnarray*}
+        -35 &= & 78.7071iI_{A} + 0I_{B} + 24.9655iI_{C}\\
+        -45 &= & 0I_{A} + (10 - 9.2264i)I_{B} + 0I_{C}\\
+        45 &= & 24.9655iI_{A} + 0I_{B} + (13 + 8.0212i)I_{C}\\
+	\end{eqnarray*}
+
+Zapíšeme jako matici a vypočítáme determinant:
+    \begin{eqnarray*}
+        A &= &
+			\begin{pmatrix}			
+				78.7071i & 0 & 24.9655i & \vline & -35\\
+				0 & 10 - 9.2264i & 0 & \vline & -45\\
+				24.9655i & 0 & 13 + 8.0212i & \vline & 45\\
+			\end{pmatrix} \\
+		\\
+		Det A &= &
+			\begin{vmatrix}
+				78.7071i & 0 & 24.9655i\\
+				0 & 10 - 9.2264i & 0\\
+				24.9655i & 0 & 13 + 8.0212i \\
+			\end{vmatrix} = 9359.8894 + 10306.1881i\\
+		\\
+	\end{eqnarray*}
+
+Vypočítáme z matice $I_{A}$ a $I_{C}$:
+    \begin{eqnarray*}
+        I_{A} &= &
+			\begin{vmatrix}
+				-35 & 0 & 24.9655i\\
+				-45 & 10 - 9.2264i & 0\\
+				45 & 0 & 13 + 8.0212i\\
+			\end{vmatrix} / Det A = - 1.3688 + 0.4555i A\\
+		\\
+		I_{C} &= &
+			\begin{vmatrix}
+				78.7071i & 0 & -35\\
+				0 & 10 - 9.2264i & -45\\
+				24.9655i & 0 & 45\\
+			\end{vmatrix} / Det A = 4.3153 - 0.0339i A\\
+		\\
+	\end{eqnarray*}
+
+Vypočítáme hledané hodnoty:
+    \begin{eqnarray*}
+        I_{C2} &= & I_{C} - I_{A} = (4.3153 - 0.0339i) - (- 1.3688 + 0.4555i) = 5.6841 - 0.4894i\\
+        U_{C2} &= & I_{C2} * X_{C2} = (5.6841 - 0.4894i) * - 24.9655i = - 12.2181 - 141.9064i\\
+        |U_{C2}| &= & \sqrt{RealU_{C2}^2 + ImgU_{C2}^2} = \sqrt{(-12.2181)^2 + (-141.9064)^2} = 142.4314 V\\
+        \end{eqnarray*}
+               3. kvadrant
+    \begin{eqnarray*}
+        \varphi_{C2} &= & \pi + tan^-1(\frac{ImgU_{C2}}{RealU_{C2}})\\
+        \varphi_{C2} &= & \pi +  tan^-1(\frac{-141.9064}{-12.2181}) = 4.6265 rad\\
+        \varphi_{C2} &= & \frac{180}{\pi} * 4.6265 rad = \ang{265.07899}\\
+	\end{eqnarray*}
+
+Hledané hodnoty $|U_{C2}|$ a $\phi_{C2}$ jsou:
+    \begin{eqnarray*}
+        |U_{C2}| = 142.4314 V\\
+        \varphi_{C2} = \ang{265.07899}\\
+	\end{eqnarray*}

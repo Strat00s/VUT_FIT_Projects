@@ -1,0 +1,52 @@
+.LoginPage{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    font-size: calc(10px + 2vmin);
+}
+
+.LPBankLogo{
+    min-width: 297px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.LPMainBody{
+    min-width: 330px;
+    text-align: center;
+}
+
+.LRButton{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    font-size: calc(10px + 2vmin);
+
+    margin-bottom: 15px;
+}
+
+.LPErrorModalMessage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.LPErrorModalButton{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.LPServerInput{
+    margin-top: 15px;
+}

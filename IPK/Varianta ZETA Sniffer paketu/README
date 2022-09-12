@@ -1,0 +1,23 @@
+Jednoduchý síťový analyzátor napsaný v c++11 pro filtrování a vypisování paketů.
+
+příklad spuštění:
+make
+./ipk-sniffer -i
+    eth0
+    lo
+    docker0
+------------------------------------------------------------------------------------
+make
+./ipk-sniffer -i eth0 --arp
+    2021-04-24T12:48:17.986+02:00 04:D4:C4:C2:86:80 > A8:A1:59:11:02:75, lenght 60 bytes
+    0x0000:  A8 A1 59 11 02 75 04 D4  C4 C2 86 80 08 06 00 01  ..Y..u..........
+    0x0010:  08 00 06 04 00 01 04 D4  C4 C2 86 80 C0 A8 01 01  ................
+    0x0020:  00 00 00 00 00 00 C0 A8  01 B0 00 00 00 00 00 00  ................
+    0x0030:  00 00 00 00 00 00 00 00  00 00 00 00              ............
+
+Seznam souborů:
+    ipk-sniffer.cpp
+    ipk-sniffer.hpp
+    manual.pdf
+    Makefile
+    README

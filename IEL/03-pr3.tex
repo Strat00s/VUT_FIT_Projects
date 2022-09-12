@@ -1,0 +1,92 @@
+\section{Příklad 3}
+% Jako parametr zadejte skupinu (A-H)
+\tretiZadani{A}
+
+I. Kirchhův zákon použijeme na uzly v obvodu:
+    \begin{eqnarray*}
+        A&: & 0 = I_{R1} + I_{R2} - I_{1}\\
+        B&: & 0 = I_{R4} -I_{R2} - I_{R5}\\
+        C&: & 0 = I_{R3} + I_{R5} -I_{R4} - I_{2}\\
+	\end{eqnarray*}
+
+Vyjádříme proudy pomocí úzlových napětí:\\
+    
+               Substituce $G_{x} = \frac{1}{R_{x}}$
+    \begin{eqnarray*}
+        I_{R1} &= & \frac{U_{A}}{R_{1}} = G_{1} * U_{A}\\
+        I_{R2} &= & \frac{U_{A} - U_{B}}{R_{2}} = G_{2}(U_{A} - U_{B})\\
+        I_{R3} &= & \frac{U_{C}}{R_{3}} = G_{3} * U_{C}\\
+        I_{R4} &= & \frac{U_{A} - U_{B}}{R_{4}} = G_{4}(U_{A} - U_{B})\\
+        I_{R5} &= & \frac{U + U_{C} - U_{B}}{R_{5}} = G_{5}(U + U_{C} - U_{B})\\
+	\end{eqnarray*}
+
+Dosadíme proudy do rovnic:
+    \begin{eqnarray*}
+        0 &= & G_{1}U_{A} + G_{2}(U_{A} - U_{B}) - I_{1}\\
+        0 &= & G_{4}(U_{B} - U_{C}) - G_{2}(U_{A} - U_{B}) - G_{5}(U + U_{C} - U_{B})\\
+        0 &= & G_{3}U_{C} + G_{5}(U + U_{C} - U_{B}) - G_{4}(U_{B} - U_{C}) - I_{2}\\
+	\end{eqnarray*}
+	
+Upravíme rovnice:
+    \begin{eqnarray*}
+        I_{3} &= & G_{5}U\\
+        \\
+        I_{1} &= & U_{A}(G_{1} + G_{2}) - U_{B}(G_{2})\\
+        I_{3} &= & U_{B}(G_{2} + G_{4} + G_{5})-U_{A}(G_{2}) - U_{C}(G_{4} + G_{5})\\
+        I_{2} - I_{3}&= & U_{C}(G_{3} + G_{4} + G_{5}) - U_{B}(G_{4} + G_{5})\\
+	\end{eqnarray*}
+	
+Dosadíme hodnoty:
+    \begin{eqnarray*}
+        0.9 &= & 0.0393U_{A} - 0.0204U_{B} + 0 U_{C}\\
+        3.75 &= & -0.0204U_{A} + 0.0773U_{B} - 0.0569U_{C}\\
+        -3.05 &= & 0U_{A} - 0.0569U_{B} + 0.0723U_{C}\\
+	\end{eqnarray*}
+
+Zapíšeme jako matici a vypočítáme determinant:
+    \begin{eqnarray*}
+        A &= &
+			\begin{pmatrix}			
+				0.0393 & - 0.0204 & 0 & \vline & 0.9 \\
+				- 0.0204 & 0.0773 & - 0.0569 & \vline & 3.75 \\
+				0 & - 0.0569 & 0.0723 & \vline & -3.05
+			\end{pmatrix} \\
+		\\
+		Det A &= &
+			\begin{vmatrix}
+				0.0393 & - 0.0204 & 0\\
+				- 0.0204 & 0.0773 & - 0.0569\\
+				0 & - 0.0569 & 0.0723 \\
+			\end{vmatrix} = 6.2313 * 10^{-5}\\
+		\\
+	\end{eqnarray*}
+
+Vypočítáme z matice $U_{B}$ a $U_{C}$:
+    \begin{eqnarray*}
+        U_{B} &= &
+            \begin{vmatrix}
+				0.0393 & 0.9 & 0\\
+				- 0.0204 & 3.75 & - 0.0569\\
+				0 & - 3.05 & 0.0723 \\
+			\end{vmatrix} / Det A = 82.845 V\\
+		\\
+        U_{C} &= &
+            \begin{vmatrix}
+				0.0393 & - 0.0204 & 0.9\\
+				- 0.0204 & 0.0773 & 3.75\\
+				0 & - 0.0569 & -3.05 \\
+			\end{vmatrix} / Det A = 23.0136 V\\
+		\\
+	\end{eqnarray*}
+
+Dopočítáme hledané hodnoty:
+    \begin{eqnarray*}
+        U_{R4} &= & U_{B} - U_{C} = 82.845 - 23.0136 = 59.8314 V\\
+        I_{R4} &= & \frac{U_{R4}}{R_{4}} = \frac{58.8314}{39} = 1.5341 A\\
+	\end{eqnarray*}
+	
+Hledané hodnoty $U_{R4}$ a $I_{R4}$ jsou:
+    \begin{eqnarray*}
+        U_{R4} &= & 59.8314 V\\
+        I_{R4} &= & 1.5341 A\\
+	\end{eqnarray*}

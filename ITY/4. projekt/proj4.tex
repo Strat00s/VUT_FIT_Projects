@@ -1,0 +1,47 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper, total={17cm, 24cm}, left=2cm, top=3cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{csquotes}
+\usepackage{expl3}
+\usepackage[sorting=none, style=iso-numeric, articlepubinfo=true]{biblatex}
+\addbibresource{refs.bib}
+\usepackage[unicode]{hyperref}
+\usepackage{times, tabulary ,amsmath,amssymb}
+\renewcommand{\UrlFont}{\ttfamily\scriptsize}
+
+\begin{document}
+
+    \begin{titlepage}
+        \begin{center}
+            \Huge \textsc{Vysoké učení technické v Brně}\\
+            \huge \textsc{Fakulta informačních technologií}
+            \vspace{\stretch{0.382}}
+
+            \LARGE Typografie a publikování\,--\,4. projekt \\
+            \Huge Bibliografické citace, BiBTeX
+            \vspace{\stretch{0.618}}
+        \end{center}
+        \Large \today \hfill Lukáš Baštýř (xbasty00)
+    \end{titlepage}
+    
+        Úložných médií do počítačů bylo mnoho druhů. Od děrných štítků po moderní polovodičové disky. Rád bych Vám jich zde pár popsal a přiblížil.
+    
+    \subsection*{Williams–Kilburnova trubice}
+    Williams–Kilburnova trubice, viz \cite{CopelandBJack2011TMCA}, bylo plně elektronické zařízení, využívající katodovou trubici pro zobrazení a uchování dat (bitů). Data byla následně čtena pomocí malého kusu plechu, který byl umístěn před sklem displeje. Jednalo se o první plně digitální paměť s náhodným přístupem, neboli \textbf{RAM} (z anglického \emph{Random Access Memory}).
+    \subsection*{Feritová paměť}
+    Tato paměť se skládala z feritových prstenců, skrz které vedli čtyři vodiče. Každý tento prstenec mohl uložit právě jeden bit (0 nebo 1), viz \cite{mcm}. Vůbec první použití této technologie bylo na, ale nejznámější použití je v raketě \textbf{Saturn V} \cite{SaturnVFM} v modulu \textbf{LVDC} \cite{KuehnRalphE1969CRDP}
+    
+    \subsection*{Magnetické pásky}
+    Jednalo se o plastové pásky, pokryté magnetickou vrstvou pro ukládání dat. Velikou výhodou magnetických pásek byla hustota dat oproti jiným datovým mediím. Jejich hlavní nevýhodou ale byla \emph{rychlost sekvenčního vyhledávání}. V dnešní době se používají výhradně na zálohování. Lze nalézt v \cite {PsotaMarek2010Zdhs} a \cite{WMP}.
+    
+    \subsection*{Pevný disk}
+    Vůbec prvním komerčně používaným pevným diskem se stal \emph{IBM 305 RAMAC}. Při ceně \$10,000 za 1MB a velikosti 5MB, zabíral tento pevný disk prostor jako dvě lednice \cite{pcmagHDD}. Naštěstí hustota pevných disků exponenciálně rostla, takže se v dnešní době dá v 3,5 palcovém těle sehnat až 18TB (a v blízké budoucnosti i 20TB, viz \cite{pcmag20}).
+    
+    \subsection*{Solid-state drive}
+    Solid-state drive (ve zkratce SSD, v češtině \emph{polovodičové disky}) jsou disky, které nemají žádné mechanické části. Jsou tvořeny z \emph{flash} pamětí, na které ukládají data. Díky těmto vlastnostem jsou odolné vůči mechanickým jevům a zároveň značně rychlejší, viz \cite{KotekJan2010Sd}. Zprvu byl ale oproti pevným diskům problém s hustotou dat. Ten byl ale v dnešní době již překonán a je možné vměstnat až 100TB do 3,5 palcového těla \cite{techradar100}.
+    
+    \pagebreak
+    
+    \printbibliography
+\end{document}

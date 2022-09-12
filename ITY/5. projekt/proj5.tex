@@ -1,0 +1,79 @@
+\documentclass[unicode, breaklinks]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{csquotes}
+\usepackage{listings}
+\usetheme{Antibes}
+
+\title{Typografie a publikování\,--\,5. projekt \\
+       Vytváření prezentací v LaTeXu}
+\author{Lukáš Baštýř (xbasty00)}
+\institute{Vysoké učení technické v Brně\\
+           Fakulta informačních technologií}
+\date{\today}
+
+\begin{document}
+
+    \frame{\titlepage}
+    
+    \title{Datové struktury - zásobník}
+    
+    \frame{\titlepage}
+
+    \frame{\tableofcontents}
+
+    \section{Úvod}
+    \begin{frame}
+        \frametitle{Úvod}
+        Existuje velké množství datových typů. Zásobník je ale jeden z těch jednoduších a zároveň asi nejvíce užíváných.
+    \end{frame}
+    
+    \section{Základní popis}
+    \begin{frame}
+        \frametitle{Zásobník}
+        \begin{itemize}
+            \item Jedná se o lineární datový typ
+            \item Data která byla uložena jako poslední se čtou jako první\\ \textbf{LIFO} (z angl. \emph{last in, first out})
+            \item Použití:
+            \begin{itemize}
+                \item Undo/redo operace v různých editorech
+                \item Otočení pořádí prvků v datové struktuře
+                \item Výpočet matematických operací
+            \end{itemize}
+        \end{itemize}
+    \end{frame}
+
+    \section{Základní operace}
+        \begin{frame}
+            \frametitle{Základní operace na zásobníku}
+            \begin{itemize}
+                \item Init\,-\,inicializace zásobníku
+                \item Push\,-\,vložení položky na vrchol zsobníku
+                \item Pop\,-\,vyjmutí poslední přídané položky ze zásobníku 
+                \item Top\,-\,získání vrchní prvku na zásobníku (bez jeho odstranení ze     zásobníku)
+        \item Is\_empty\,-\,dotaz, zda je zásobník prázdný
+    \end{itemize}
+    \end{frame}
+
+    \section{Implementace v pseudokódu}
+    \begin{frame}[fragile]
+        \frametitle{Příklad implementace}
+        \begin{lstlisting}[basicstyle=\small]
+stack test_s;    //create new stack
+test_s.init();   //initialize empty stack
+test_s.push(5);  //push 5 onto the stack
+test_s.push(10); //push 10 onto the stack
+int last_var = test_s.pop(); //take last value from
+                             //stack (last_var = 10)
+bool empty = test_s.empty(); //empty is now false as
+                             //stack is not empty yet
+int top_var = test_s.top();  //top_var = 5, because
+                             //10 is top variable
+top_var = test_s.pop(); //top_var is again 5, but
+                        //stack should be now empty
+empty = test_s.empty(); //empty is now true, as
+                        //stack is actually empty
+        \end{lstlisting}
+    \end{frame}
+
+\end{document}
